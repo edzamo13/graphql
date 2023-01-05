@@ -13,10 +13,14 @@ const schema = buildSchema(`
 // resolvers
 const resolvers = {
     hello: () => 'Hola mundo',
-    saludo: () => 'Hola a todos'
+    saludo: () => 'Hola a todos desde saludo'
 }
 
 // execute query
-graphql(schema, '{ saludo }', resolvers).then((data) => {
+graphql(schema, '{ hello }', resolvers).then((data) => {
     console.log(data);
+});
+
+graphql(schema, '{ saludo }', resolvers).then((data) => {
+  console.log(data);
 });
