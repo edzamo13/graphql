@@ -1,28 +1,24 @@
-'use strict'
+"use strict";
 
-var express = require('express');
-var { graphqlHTTP } = require('express-graphql');
-var { buildSchema } = require('graphql');
-const { readFileSync } = require('fs')
-const { join } = require('path');
-const resolvers = require('../schema/resolvers/resolvers');
-const { makeExecutableSchema } = require('graphql-tools')
+import { ApolloServer } from "@apollo/server";
+import { startStandaloneServer } from "@apollo/server/standalone";
+import { typeDefs } from "../schema/schema.js";
+import { resolvers } from "../schema/resolvers/resolvers.js";
 
 
+// The ApolloServer constructor requires two parameters: your schema
+// definition and your set of resolvers.
+const server = new ApolloServer({
+  typeDefs,
+  resolvers,
+});
 
-// definiendo el esquema
-const typeDefs = readFileSync(
-  join(__dirname, 'schema', 'schema.graphql'),
-  'utf-8'
-)
-const schema = makeExecutableSchema({ typeDefs, resolvers })
+// Passing an ApolloServer instance to the `startStandaloneServer` function:
+//  1. creates an Express app
+//  2. installs your ApolloServer instance as middleware
+//  3. prepares your app to handle incoming requests
+const { url } = await startStandaloneServer(server, {
+  listen: { port: 4000 },
+});
 
-
-var app = express();
-app.use('/graphql', graphqlHTTP({
-  schema: schema,
-  rootValue: resolvers,
-  graphiql: true,
-}));
-app.listen(4000);
-console.log('Running a GraphQL API server at http://localhost:4000/graphql');
+console.log(`🚀  Server ready at: ${url}`);
