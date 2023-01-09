@@ -63,3 +63,7 @@ Por el momento nuestra API maneja pura información estática, vamos a cambiar e
 Es recomendable almacenar las credenciales de conexión a la base de datos como variables de entorno del sistema y utilizar dotenv para la lectura de dichas credenciales. Para su instalación vamos a correr el comando
 
     npm i dotenv
+
+## install mongo
+
+    npm i mongo
