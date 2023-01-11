@@ -19,7 +19,8 @@
     "graphql": "^15.8.0",
     "graphql-tools": "^8.3.14",
     "graphql-yoga": "^3.3.0",
-    "mongo": "^0.1.0"
+    "mongo": "^0.1.0",
+    "mongodb": "^4.13.0"
   },
   "devDependencies": {
     "@types/node": "^18.11.18",

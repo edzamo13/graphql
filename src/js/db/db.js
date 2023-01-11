@@ -1,35 +1,37 @@
-'use strict'
+"use strict";
 
-import { MongoClient } from ('mongo')
-const {
-  DB_USER,
-  DB_PASSWD,
-  DB_HOST,
-  DB_PORT,
-  DB_NAME
-} = process.env
+import mongodb from "mongodb";
+import pkg from "dotenv";
 
-const mongoUrl = `mongodb://${DB_USER}:${DB_PASSWD}@${DB_HOST}:${DB_PORT}/?authMechanism=DEFAULT`
+const { MongoClient } = mongodb;
+const { dotenv } = pkg.config();
+
+const { DB_USER, DB_PASSWD, DB_HOST, DB_PORT, DB_NAME } = process.env;
+
+const uri = `mongodb://${DB_USER}:${DB_PASSWD}@${DB_HOST}:${DB_PORT}/?authMechanism=DEFAULT`;
 //const mongoUrl = `mongodb://${DB_USER}:${DB_PASSWD}@${DB_HOST}:${DB_PORT}/${DB_NAME}`
-//mongodb://mongoadmin:admin@localhost:27017/?authMechanism=DEFAULT
 
-let connection
+// Create a new MongoClient
+const client = new MongoClient(uri);
+let connection;
 
-export async function connectDB () {
-  if (connection) return connection
-
-  let client
+async function run() {
+  if (connection) return connection;
+  let clientConnection;
   try {
-    client = await MongoClient.connect(mongoUrl, {
-      useNewUrlParser: true
-    })
-    connection = client.db(DB_NAME)
-  } catch (error) {
-    console.error('Could not connect to db', mongoUrl, error)
-    process.exit(1)
+    // Connect the client to the server (optional starting in v4.7)
+    clientConnection = await client.connect();
+    // Establish and verify connection
+    // await connection.db("admin").command({ ping: 1 });
+    connection = client.db(DB_NAME);
+    console.log("Connected successfully to server!!");
+  } finally {
+    // Ensures that the client will close when you finish/error
+   // await client.close();
   }
 
-  return connection
+  return connection;
 }
+run().catch(console.dir);
 
-//module.exports = connectDB
+export const connectDB = run;

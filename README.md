@@ -67,3 +67,4 @@ Es recomendable almacenar las credenciales de conexión a la base de datos como 
 ## install mongo
 
     npm i mongo
+    npm install mongodb
